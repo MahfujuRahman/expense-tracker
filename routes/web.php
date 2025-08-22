@@ -6,9 +6,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[LoginController::class, 'showLoginForm']);
 
 // Auth
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');

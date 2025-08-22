@@ -10,16 +10,10 @@
 
             @include('expenses._form', ['expense' => $expense])
 
-            <div class="mt-4 flex space-x-2">
-                <button class="bg-green-600 text-white px-3 py-1 rounded">Update</button>
-                <a href="{{ route('expenses.index') }}" class="px-3 py-1 border rounded">Cancel</a>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-success">Update</button>
+                <a href="{{ route('expenses.index') }}" class="btn btn-outline-secondary">Cancel</a>
             </div>
-        </form>
-
-        <form method="POST" action="{{ route('expenses.destroy', $expense) }}" class="mt-3">
-            @csrf
-            @method('DELETE')
-            <button class="text-red-600">Delete</button>
         </form>
     </div>
 @endsection

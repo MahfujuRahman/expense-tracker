@@ -22,7 +22,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($creds)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('expenses.index'));
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');

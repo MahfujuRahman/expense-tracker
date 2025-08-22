@@ -1,61 +1,139 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Expense Tracker — Install & Run
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository contains a small Laravel-based expense tracker application. The steps below show how to install dependencies, copy the example environment file, run migrations, and start the development server (PowerShell examples included).
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.0+ with required extensions
+- Composer
+- Node.js 14+ and npm
+- SQLite (recommended for quick local run) or MySQL/Postgres
+- Git (optional)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Quick start (recommended, PowerShell)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Open a PowerShell prompt and go to the project directory:
 
-## Learning Laravel
+```powershell
+cd "D:\Practice work\ComputerCity\TaskManager"
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. Copy the example environment file to create your local `.env`:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```powershell
+Copy-Item .env.example .env
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Install PHP dependencies with Composer:
 
-## Laravel Sponsors
+```powershell
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Generate the application key:
 
-### Premium Partners
+```powershell
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. (SQLite only) create the SQLite file used by the project:
 
-## Contributing
+```powershell
+if (!(Test-Path -Path .\database\database.sqlite)) { New-Item -Path .\database\database.sqlite -ItemType File }
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. Configure the database in `.env` if you need MySQL/Postgres. For SQLite ensure these values are set (relative path works):
 
-## Code of Conduct
+```
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7. Run database migrations (and seeders if present):
 
-## Security Vulnerabilities
+```powershell
+php artisan migrate --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8. Install front-end dependencies and build assets (Vite):
 
-## License
+```powershell
+npm install
+npm run dev
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+9. Create the storage symbolic link (for user uploaded files):
+
+```powershell
+php artisan storage:link
+```
+
+10. Start the local development server:
+
+```powershell
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+Open http://127.0.0.1:8000 in your browser.
+
+## Running tests
+
+On Windows PowerShell run the bundled PHPUnit binary:
+
+```powershell
+.\vendor\bin\phpunit.bat
+```
+
+Or when using Git Bash / WSL:
+
+```bash
+./vendor/bin/phpunit
+```
+
+## Common maintenance & troubleshooting
+
+- Composer out of memory during install (PowerShell):
+
+```powershell
+$env:COMPOSER_MEMORY_LIMIT = '-1'; composer install
+```
+
+- If migrations fail, double-check `.env` DB_* values and that the DB file exists (for sqlite) or DB server is running (for mysql/postgres).
+- If assets don't load, ensure `npm run dev` is running while you develop, or run `npm run build` for production.
+- If you see permission errors when writing to `storage` or `bootstrap/cache`, make those directories writable by the webserver.
+
+## Switching to MySQL (example)
+
+1. Update `.env` with your MySQL settings:
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_user
+DB_PASSWORD=your_password
+```
+
+2. Create the database in MySQL and run migrations:
+
+```powershell
+php artisan migrate --seed
+```
+
+## Notes
+
+- Do not commit your `.env` file. It contains sensitive credentials.
+- If you edit route or config files, clear cached config and routes:
+
+```powershell
+php artisan config:clear; php artisan route:clear; php artisan cache:clear
+```
+
+## Additional help
+
+If you run into issues not covered here, open an issue or inspect the Laravel logs at `storage/logs/laravel.log`.
+
+---
+
+This README provides the essential steps to get the project running locally. If you'd like, I can add a short section that documents common developer workflows (creating users, seeding sample data, or running the seeders used for demo accounts).

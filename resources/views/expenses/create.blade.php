@@ -10,8 +10,8 @@
             @include('expenses._form')
 
             <div class="mt-4">
-                <button class="bg-green-600 text-white px-4 py-2 rounded">Save</button>
-                <a href="{{ route('expenses.index') }}" class="ml-2 px-4 py-2 border rounded">Cancel</a>
+                <button class="btn btn-success">Save</button>
+                <a href="{{ route('expenses.index') }}" class="btn btn-secondary ml-2">Cancel</a>
             </div>
         </form>
     </div>
